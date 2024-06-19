@@ -46,8 +46,8 @@ with open('label_encoder_fine.pkl', 'wb') as f:
 # Step 3: 文本特征提取
 tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 
-X_train_coarse, X_test_coarse, y_train_coarse, y_test_coarse = train_test_split(df['报警内容'], df['警情粗类编码'], test_size=0.3, random_state=205392)
-X_train_fine, X_test_fine, y_train_fine, y_test_fine = train_test_split(df['报警内容'], df['警情细类编码'], test_size=0.3, random_state=205392)
+X_train_coarse, X_test_coarse, y_train_coarse, y_test_coarse = train_test_split(df['报警内容'], df['警情粗类编码'], test_size=0.2, random_state=205392)
+X_train_fine, X_test_fine, y_train_fine, y_test_fine = train_test_split(df['报警内容'], df['警情细类编码'], test_size=0.2, random_state=205392)
 
 def encode_data(texts, labels, max_length=128):
     inputs = tokenizer(texts.tolist(), max_length=max_length, padding='max_length', truncation=True, return_tensors='pt')
@@ -90,7 +90,7 @@ training_args_coarse = TrainingArguments(
     logging_steps=100,  # 每100个步骤记录一次日志
     logging_first_step=True,
     save_steps=500,  # 每500个步骤保存一次检查点
-    learning_rate=2e-5,  # 设置学习率
+    learning_rate=4e-5,  # 设置学习率
 )
 
 # 定义Trainer对象来训练粗类分类模型
@@ -114,8 +114,8 @@ trainer_coarse.save_model('./checkpoint/coarse_model')
 # 定义细类分类模型的训练参数
 training_args_fine = TrainingArguments(
     output_dir='./results_fine',
-    num_train_epochs=20,  # 25轮训练
-    per_device_train_batch_size=8,
+    num_train_epochs=20, 
+    per_device_train_batch_size=16,
     per_device_eval_batch_size=8,
     evaluation_strategy="epoch",
     save_strategy="epoch",
@@ -126,7 +126,7 @@ training_args_fine = TrainingArguments(
     logging_steps=100,  # 每100个步骤记录一次日志
     logging_first_step=True,
     save_steps=500,  # 每500个步骤保存一次检查点
-    learning_rate=1e-5,  # 设置学习率
+    learning_rate=5e-5,  # 设置学习率
 )
 
 # 定义Trainer对象来训练细类分类模型

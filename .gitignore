@@ -30,6 +30,7 @@ logs_fine/
 
 # 忽略数据文件
 data.xlsx
+*.xlsx
 
 # 忽略所有隐藏文件和文件夹
 .*
@@ -57,5 +58,5 @@ pytorch_model.bin
 tf_model.h5
 
 # 忽略Jupyter Notebook输出
-*.ipynb
+ipynb
 *.doc
