@@ -1,0 +1,60 @@
+# 忽略Python缓存文件
+__pycache__/
+*.py[cod]
+*.pyo
+
+# 忽略Jupyter Notebook检查点
+.ipynb_checkpoints
+
+# 忽略环境配置文件
+.env
+.venv/
+env/
+venv/
+ENV/
+
+# 忽略日志文件
+logs/
+*.log
+
+# 忽略输出文件
+results_coarse/
+results_fine/
+checkpoint/
+logs_coarse/
+logs_fine/
+*.pt
+
+# 忽略中间文件
+*.pkl
+
+# 忽略数据文件
+data.xlsx
+
+# 忽略所有隐藏文件和文件夹
+.*
+!.gitignore
+
+# 忽略OS生成的文件
+.DS_Store
+Thumbs.db
+
+# 忽略IDE和编辑器生成的文件
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# 忽略模型文件和其他大型文件
+*.h5
+*.hdf5
+*.ckpt
+*.tar.gz
+*.zip
+
+# 忽略模型权重文件
+pytorch_model.bin
+tf_model.h5
+
+# 忽略Jupyter Notebook输出
+*.ipynb

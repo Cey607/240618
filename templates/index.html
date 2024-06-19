@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>报警分类器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 600px;
+        }
+        .input-group {
+            margin: 15px 0;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .input-group input {
+            width: 500px;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 16px;
+            resize: vertical; /* 允许垂直方向自动调整大小 */
+        }
+        .input-group input::placeholder {
+            color: #ced4da; 
+        }
+        .btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+        }
+        .prediction {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>报警分类器</h1>
+        <form id="classify-form">
+            <div class="input-group">
+                <label for="alarm_text">请输入报警内容：</label>
+                <textarea id="alarm_text" name="text" rows="4" placeholder="请输入报警信息" required></textarea>
+            </div>
+            <button type="submit" class="btn">确定</button>
+        </form>
+        
+        <div id="predictions" class="result" style="display: none;">
+            <h2>分类结果</h2>
+            <div id="coarse-prediction" class="prediction">
+                <strong>粗类预测:</strong> 
+            </div>
+            <div id="fine-prediction" class="prediction">
+                <strong>细类预测:</strong> 
+            </div>
+        </div>
+        
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('classify-form');
+            const predictionsDiv = document.getElementById('predictions');
+            const coarsePredictionDiv = document.getElementById('coarse-prediction');
+            const finePredictionDiv = document.getElementById('fine-prediction');
+            const alarmText = document.getElementById('alarm_text');
+
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                const formData = new FormData(form);
+                fetch('/classify', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    coarsePredictionDiv.innerHTML = `<strong>粗类预测:</strong> ${data.coarse_prediction}`;
+                    finePredictionDiv.innerHTML = `<strong>细类预测:</strong> ${data.fine_prediction}`;
+                    predictionsDiv.style.display = 'block';  // 显示分类结果区域
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('分类失败，请稍后重试！');
+                });
+            });
+
+            // 监听输入框焦点，显示/隐藏灰色提示文本
+            alarmText.addEventListener('focus', function() {
+                if (alarmText.value === '请输入报警信息') {
+                    alarmText.value = '';
+                    alarmText.style.color = 'black'; // 输入时恢复黑色字体
+                }
+            });
+
+            alarmText.addEventListener('blur', function() {
+                if (alarmText.value === '') {
+                    alarmText.value = '请输入报警信息';
+                    alarmText.style.color = '#ced4da'; // 恢复灰色字体
+                }
+            });
+        });
+    </script>
+</body>
+</html>
