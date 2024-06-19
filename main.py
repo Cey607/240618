@@ -114,7 +114,7 @@ trainer_coarse.save_model('./checkpoint/coarse_model')
 # 定义细类分类模型的训练参数
 training_args_fine = TrainingArguments(
     output_dir='./results_fine',
-    num_train_epochs=25,  # 25轮训练
+    num_train_epochs=20,  # 25轮训练
     per_device_train_batch_size=8,
     per_device_eval_batch_size=8,
     evaluation_strategy="epoch",
@@ -126,7 +126,7 @@ training_args_fine = TrainingArguments(
     logging_steps=100,  # 每100个步骤记录一次日志
     logging_first_step=True,
     save_steps=500,  # 每500个步骤保存一次检查点
-    learning_rate=2e-5,  # 设置学习率
+    learning_rate=1e-5,  # 设置学习率
 )
 
 # 定义Trainer对象来训练细类分类模型

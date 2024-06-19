@@ -58,3 +58,4 @@ tf_model.h5
 
 # 忽略Jupyter Notebook输出
 *.ipynb
+*.doc
